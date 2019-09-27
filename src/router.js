@@ -21,9 +21,6 @@ const router = new Router({
     {
       path: '/index',
       component: Index,
-      // children: [{ path: '/users', name: 'users', component: Users },
-      //   { path: '/roles', name: 'roles', component: Roles },
-      //   { path: '/rights', name: 'rights', component: Rights }]
       children: [
         { path: '/users', component: Users },
         { path: '/roles', component: Roles },
@@ -38,8 +35,7 @@ const router = new Router({
   ]
 
 })
-
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, form, next) => {
   const token = localStorage.getItem('token')
   if (to.path === '/login' || token) {
     next()

@@ -17,9 +17,8 @@
     <el-container>
       <el-aside width="200px">
         <el-menu
-          router
-          default-active="2"
           unique-opened
+          router
           class="el-menu-vertical-demo"
           background-color="#545c64"
           text-color="#fff"
@@ -30,23 +29,21 @@
               <i class="el-icon-location"></i>
               <span>用户管理</span>
             </template>
-
             <el-menu-item index="users">
               <i class="el-icon-menu"></i>
               <span slot="title">用户列表</span>
             </el-menu-item>
           </el-submenu>
-          <el-submenu index="2">
+
+           <el-submenu index="2">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>权限管理</span>
             </template>
-
             <el-menu-item index="roles">
               <i class="el-icon-menu"></i>
               <span slot="title">角色列表</span>
             </el-menu-item>
-
             <el-menu-item index="rights">
               <i class="el-icon-menu"></i>
               <span slot="title">权限列表</span>
@@ -54,10 +51,12 @@
           </el-submenu>
         </el-menu>
       </el-aside>
+
       <el-main>
         <router-view></router-view>
       </el-main>
     </el-container>
+
   </el-container>
 </template>
 
@@ -67,17 +66,14 @@ export default {
     logout () {
       this.$confirm('亲, 你确认要退出系统吗?', '温馨提示', {
         type: 'warning'
+      }).then(() => {
+        this.$message.success('退出成功')
+        localStorage.removeItem('token')
+        this.$router.push('/login')
+      }).catch(e => {
+        console.log(e)
+        this.$message.error('取消退出')
       })
-        .then(() => {
-          // 确认提示
-          this.$message.success('恭喜退出成功')
-          localStorage.removeItem('token')
-          this.$router.push('/login')
-        })
-        .catch(() => {
-          // 失败提示
-          this.$message('亲 退出失败')
-        })
     }
   }
 }
@@ -88,8 +84,8 @@ export default {
   height: 100%;
   .el-header {
     background-color: #d8d8d8;
-    display: flex;
     padding: 0;
+    display: flex;
     .logo {
       width: 200px;
       padding: 10px;
@@ -101,19 +97,17 @@ export default {
     }
     .title {
       flex: 1;
-      text-align: center;
       h1 {
         line-height: 60px;
-        color: #545c64;
-        font-size: 24px;
+        text-align: center;
+        font-weight: 700;
       }
     }
     .logout {
       width: 200px;
       padding: 10px;
-      line-height: 40px;
       text-align: right;
-      font-weight: 700;
+      line-height: 40px;
       a {
         color: orange;
       }
@@ -121,8 +115,8 @@ export default {
   }
   .el-aside {
     background-color: #545c64;
-    .el-menu {
-      border-right: none;
+    .el-menu{
+      border-right: none
     }
   }
   .el-main {
