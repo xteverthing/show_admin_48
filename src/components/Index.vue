@@ -17,6 +17,8 @@
     <el-container>
       <el-aside width="200px">
         <el-menu
+
+        :default-active="defaultActive"
           unique-opened
           router
           class="el-menu-vertical-demo"
@@ -24,31 +26,17 @@
           text-color="#fff"
           active-text-color="#ffd04b"
         >
-          <el-submenu index="1">
-            <template slot="title">
+          <el-submenu :index="l1.path" v-for="l1 in menuList" :key="l1.id">
+            <template v-slot:title>
               <i class="el-icon-location"></i>
-              <span>用户管理</span>
+              <span>{{l1.authName}}</span>
             </template>
-            <el-menu-item index="users">
+            <el-menu-item :index="l2.path" v-for="l2 in l1.children" :key="l2.id" >
               <i class="el-icon-menu"></i>
-              <span slot="title">用户列表</span>
+              <span slot="title">{{l2.authName}}</span>
             </el-menu-item>
           </el-submenu>
 
-           <el-submenu index="2">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>权限管理</span>
-            </template>
-            <el-menu-item index="roles">
-              <i class="el-icon-menu"></i>
-              <span slot="title">角色列表</span>
-            </el-menu-item>
-            <el-menu-item index="rights">
-              <i class="el-icon-menu"></i>
-              <span slot="title">权限列表</span>
-            </el-menu-item>
-          </el-submenu>
         </el-menu>
       </el-aside>
 
@@ -62,6 +50,25 @@
 
 <script>
 export default {
+  data () {
+    return {
+      menuList: []
+    }
+  },
+  computed: {
+    defaultActive () {
+      return this.$route.path.slice(1)
+    }
+  },
+  async  created () {
+    const { meta, data } = await this.$axios.get('menus')
+    if (meta.status === 200) {
+      this.menuList = data
+      console.log(data)
+    } else {
+      this.$message.error(meta.msg)
+    }
+  },
   methods: {
     logout () {
       this.$confirm('亲, 你确认要退出系统吗?', '温馨提示', {
