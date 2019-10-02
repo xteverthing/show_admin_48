@@ -68,7 +68,7 @@
     <el-dialog
       :title="dialogTitle"
       :visible.sync="addVisible"
-      close="closeDialog"
+      @close="closeDialog"
       width="40%">
       <el-form ref="form" :model="form" status-icon :rules="rules" label-width="80px">
 
@@ -118,7 +118,7 @@ export default {
           { required: true, message: '请输入角色描述', trigger: ['blur', 'change'] }
         ]
       },
-      dialogTitle: ''
+      dialogTitle: '添加角色'
 
     }
   },
@@ -182,6 +182,7 @@ export default {
         this.$message.error(meta.msg)
       }
     },
+    // 删除角色
     async delRole (id, e) {
       if (e.target.nodeName === 'BUTTON') {
         e.target.blur()
@@ -205,6 +206,7 @@ export default {
       this.addVisible = true
       this.dialogTitle = '添加角色'
     },
+
     showEditDialog (row) {
       this.addVisible = true
       this.dialogTitle = '修改角色'
@@ -215,7 +217,9 @@ export default {
       })
     },
     closeDialog () {
+      // 重置表单的内容 会重置成第一次展示的状态
       this.$refs.form.resetFields()
+      this.form.id = ''
     },
     async saveRole () {
       const isAdd = this.dialogTitle === '添加角色'
